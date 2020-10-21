@@ -14,7 +14,7 @@ terraform {
     resource_group_name  = "kj-rg"
     storage_account_name = "kjastorage"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "kroger-terraform.tfstate"
   }
 }
 
