@@ -9,15 +9,15 @@ provider "azurerm" {
   features {}
 }
 
-/*
+
 # Create a resource groups
 resource "azurerm_resource_group" "rg" {
   name     = var.prefix
   location = var.location
 }
-*/
 
-/*
+
+
 # Create Azure Analysis Services
 resource "azurerm_analysis_services_server" "analysisserver" {
   name                    = "${var.prefix}aas"
@@ -33,16 +33,43 @@ resource "azurerm_analysis_services_server" "analysisserver" {
   }
   
 }
-*/
 
-/*
+
 # Create Azure Datafactory
 resource "azurerm_data_factory" "adf" {
   name                = "${var.prefix}DF"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
 }
-*/
+
+
+# Create Azure Data Lake Store
+resource "azurerm_data_lake_store" "dlstore" {
+  name                = "${var.prefix}dlstore"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = azurerm_resource_group.rg.location
+}
+
+# Create Server
+resource "azurerm_sql_server" "server" {
+  name                         = "${var.prefix}server"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = var.location
+  version                      = "12.0"
+  administrator_login          = "kjakah"
+  administrator_login_password = "12346!"
+}
+
+
+resource "azurerm_sql_database" "sqldb" {
+  name                = "${var.prefix}sqldb"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  server_name         = azurerm_sql_server.server.name
+
+}
+
+
 
 #* BELOW IS USED TO CREATE A SYNAPSE POOL, TODD WALKER NOTED WE MAY BE ABLE TO SETUP ONE MANUALLU WITH THE TEAM
 /*
