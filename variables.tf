@@ -8,5 +8,5 @@ variable "location" {
 
 variable "prefix" {
   type    = string
-  default = "DTLBI"
-}
+  default = "dtlbi"  # DTLBI
+  }
