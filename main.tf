@@ -50,15 +50,16 @@ resource "azurerm_data_lake_store" "dlstore" {
   location            = azurerm_resource_group.rg.location
 }
 
-# Create Server
-resource "azurerm_sql_server" "server" {
-  name                         = "${var.prefix}server"
-  resource_group_name          = azurerm_resource_group.rg.name
-  location                     = var.location
-  version                      = "12.0"
-  administrator_login          = "kjakah"
-  administrator_login_password = "Ok12346789@!"
-}
+# # Create Server
+# resource "azurerm_sql_server" "server" {
+#   name                         = "${var.prefix}server"
+#   resource_group_name          = azurerm_resource_group.rg.name
+#   location                     = var.location
+#   version                      = "12.0"
+#   administrator_login          = "kjakah"
+#   administrator_login_password = "Ok12346789@!"
+# }
+
 
 # *** DO WE NEED SQL DB OR DW?
 # resource "azurerm_sql_database" "sqldb" {
