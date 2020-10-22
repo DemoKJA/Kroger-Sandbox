@@ -74,13 +74,13 @@ resource "azurerm_sql_server" "server" {
 }
 
 
-resource "azurerm_mssql_server_extended_auditing_policy" "example" {
-  server_id                               = azurerm_sql_server.server.id
-  storage_endpoint                        = azurerm_storage_account.storage.primary_blob_endpoint
-  storage_account_access_key              = azurerm_storage_account.storage.primary_access_key
-  storage_account_access_key_is_secondary = false
-  retention_in_days                       = 6
-}
+# resource "azurerm_mssql_server_extended_auditing_policy" "example" {
+#   server_id                               = azurerm_sql_server.server.id
+#   storage_endpoint                        = azurerm_storage_account.storage.primary_blob_endpoint
+#   storage_account_access_key              = azurerm_storage_account.storage.primary_access_key
+#   storage_account_access_key_is_secondary = false
+#   retention_in_days                       = 6
+# }
 
 #Create Azure SQL DB
 resource "azurerm_sql_database" "sqldb" {
