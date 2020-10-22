@@ -4,12 +4,6 @@
 # ARM_CLIENT_ID
 # ARM_CLIENT_SECRET -- Client Secret from Service Principal
 
-provider "azurerm" {
-  version = "2.31.1"
-  features {}
-}
-
-
 # Create a resource groups
 resource "azurerm_resource_group" "rg" {
   name     = "rg-digital-bi-eastus2-nonprod"
