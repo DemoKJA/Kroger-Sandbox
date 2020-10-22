@@ -12,7 +12,7 @@ provider "azurerm" {
 
 # Create a resource groups
 resource "azurerm_resource_group" "rg" {
-  name     = var.prefix
+  name     = "rg-digital-bi-eastus2-nonprod"
   location = var.location
 }
 
@@ -62,32 +62,29 @@ resource "azurerm_storage_data_lake_gen2_filesystem" "filesystem" {
   #depends_on = [azurerm_role_assignment.role]  # dependency for the role created
 }
 
-# # Create Server
-# resource "azurerm_sql_server" "server" {
-#   name                         = "${var.prefix}server"
-#   resource_group_name          = azurerm_resource_group.rg.name
-#   location                     = var.location
-#   version                      = "12.0"
-#   administrator_login          = "kjakah"
-#   administrator_login_password = "Ok12346789@!"
-# }
+# Create Server
+resource "azurerm_sql_server" "server" {
+  name                         = "${var.prefix}server"
+  resource_group_name          = azurerm_resource_group.rg.name
+  location                     = var.location
+  version                      = "12.0"
+  administrator_login          = "mvpadmin"
+  administrator_login_password = "P@$$word1!"
+}
 
 
-# *** DO WE NEED SQL DB OR DW?
-# resource "azurerm_sql_database" "sqldb" {
-#   name                = "${var.prefix}sqldb"
-#   resource_group_name = azurerm_resource_group.rg.name
-#   location            = var.location
-#   server_name         = azurerm_sql_server.server.name
+#Create Azure SQL DB
+resource "azurerm_sql_database" "sqldb" {
+  name                = "${var.prefix}sqldb"
+  resource_group_name = azurerm_resource_group.rg.name
+  location            = var.location
+  server_name         = azurerm_sql_server.server.name
 
-# }
-
+}
 
 
 #* BELOW IS USED TO CREATE A SYNAPSE POOL, TODD WALKER NOTED WE MAY BE ABLE TO SETUP ONE MANUALLU WITH THE TEAM
 /*
-
-
 
 #** Setting the role to permit the filestore creation
 resource "azurerm_role_assignment" "role" {
