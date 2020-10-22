@@ -43,11 +43,23 @@ resource "azurerm_data_factory" "adf" {
 }
 
 
-# Create Azure Data Lake Store
-resource "azurerm_data_lake_store" "dlstore" {
-  name                = "${var.prefix}dlstore"
-  resource_group_name = azurerm_resource_group.rg.name
-  location            = azurerm_resource_group.rg.location
+#*** Storage account ** will most likely replace with references to existing storage accounts
+resource "azurerm_storage_account" "storage" {
+  name                     = "${var.prefix}storage"
+  resource_group_name      = azurerm_resource_group.rg.name
+  location                 = azurerm_resource_group.rg.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  account_kind             = "StorageV2"
+  is_hns_enabled           = "true"
+}
+
+
+# File system
+resource "azurerm_storage_data_lake_gen2_filesystem" "filesystem" {
+  name               = "filesystem"
+  storage_account_id = azurerm_storage_account.storage.id
+  #depends_on = [azurerm_role_assignment.role]  # dependency for the role created
 }
 
 # # Create Server
@@ -75,16 +87,7 @@ resource "azurerm_data_lake_store" "dlstore" {
 #* BELOW IS USED TO CREATE A SYNAPSE POOL, TODD WALKER NOTED WE MAY BE ABLE TO SETUP ONE MANUALLU WITH THE TEAM
 /*
 
-#*** Storage account ** will most likely replace with references to existing storage accounts
-resource "azurerm_storage_account" "storage" {
-  name                     = "${var.prefix}storage"
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  account_kind             = "StorageV2"
-  is_hns_enabled           = "true"
-}
+
 
 #** Setting the role to permit the filestore creation
 resource "azurerm_role_assignment" "role" {
@@ -93,12 +96,7 @@ resource "azurerm_role_assignment" "role" {
     principal_id         = "0b2df119-bc75-4148-a92d-b1a5c4132a7a"  #** Should be the service Principal on the resource groun and take ObjectID from Kroger to place here
 }
 
-# File system
-resource "azurerm_storage_data_lake_gen2_filesystem" "filesystem" {
-  name               = "filesystem"
-  storage_account_id = azurerm_storage_account.storage.id
-  depends_on = [azurerm_role_assignment.role]  # dependency for the role created
-}
+
 
 
 # Synapse 
