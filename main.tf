@@ -57,7 +57,7 @@ resource "azurerm_sql_server" "server" {
   location                     = var.location
   version                      = "12.0"
   administrator_login          = "kjakah"
-  administrator_login_password = "12346789!"
+  administrator_login_password = "ok12346789@!"
 }
 
 
